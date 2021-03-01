@@ -6,6 +6,7 @@ import {
     BrowserRouter as Router,
     Switch,
 } from "react-router-dom";
+import Nav from "./nav";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -61,34 +62,41 @@ handleTitleChange = (e) => {
   render() {
       const { movies } = this.state;
       return (
+          <>
+            <Nav />
+            <div className="container">
+              <form>
+                <input type="text" value={ this.state.title } onChange={ this.handleTitleChange } name="title" required
+                       placeholder="Podaj tytuł filmu"/>
+                <div className="file-field input-field">
+                  <div className="btn red">
+                    <span>File</span>
+                    <input type="file" className="red" name="file" onChange={ this.onChangeHandler }/>
+                  </div>
+                  <div className="file-path-wrapper">
+                    <input className="file-path validate white-text" type="text"/>
+                  </div>
+                </div>
+                <input type="submit" className="btn red btn-success btn-block" onClick={ this.onClickHandler }/>
+              </form>
+              { movies.map(( movie ) => (
+                  <div className="card black center">
+                    <div className="card-header">
+                      #{ movie.name }
+                    </div>
+                    <div className="card-body ">
+                      <p className="card-text">{ movie.Created_date }</p>
+                    </div>
+                    <img height="200px" src={ "http://localhost:3000/movies/" + movie.filename + "/thumb" }/><br/>
+                    <button className="btn red"><a className="white-text"
+                                                   href={ "http://localhost:3001/player/" + movie.filename }>watch</a>
+                    </button>
+                  </div>
+              )) }
+            </div>
+          </>
 
-        <div className="container">
-        <form>
-          <input type="text" value={this.state.title} onChange={this.handleTitleChange} name="title" required placeholder="Podaj tytuł filmu"/>
-          <div className="file-field input-field">
-            <div className="btn red">
-            <span>File</span>
-            <input type="file" className="red" name="file" onChange={this.onChangeHandler}/>
-            </div>
-          <div class="file-path-wrapper">
-            <input class="file-path validate white-text" type="text"/>
-          </div>
-        </div>
-          <input type="submit" class="btn red btn-success btn-block" onClick={this.onClickHandler}/>
-        </form>
-          {movies.map((movie) => (
-            <div className="card black center">
-              <div className="card-header">
-                #{movie.name}
-              </div>
-              <div className="card-body ">
-                <p className="card-text">{movie.Created_date}</p>
-              </div>
-              <img height="200px" src={"http://localhost:3000/movies/"+ movie.filename + "/thumb"}/><br/>
-              <button class="btn red"><a className = "white-text" href={"http://localhost:3001/player/"+ movie.filename}>watch</a></button>
-            </div>
-          ))}
-        </div>
+
       );
     }
   }
